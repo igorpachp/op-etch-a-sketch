@@ -1,5 +1,5 @@
-const DEFAULT_CELL_COLOR = "#ffffff";
-const DEFAULT_BRUSH_COLOR = "#454545";
+const DEFAULT_CELL_COLOR = "ffffff";
+const DEFAULT_BRUSH_COLOR = "454545";
 const DEFAULT_BRUSH_MODE = "mouseover";
 
 // page elements
@@ -14,12 +14,13 @@ const clickButton = document.querySelector(".click");
 
 // control variables
 let currentBrushMode = DEFAULT_BRUSH_MODE;
-let currentBrushColor = DEFAULT_BRUSH_COLOR;
+let currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
 
 // updates cell color
 const colorListener = function (event) {
-    if (brushButton.classList.contains("active") || eraserButton.classList.contains("active"))
-        event.currentTarget.style.backgroundColor = `${currentBrushColor}`;
+    // if (brushButton.classList.contains("active") || eraserButton.classList.contains("active"))
+        // event.currentTarget.style.backgroundColor = currentBrushColor;
+    event.currentTarget.style.backgroundColor = currentBrushColor === "random" ? randomizeColor() : currentBrushColor;
 }
 
 // resets grid with new size
@@ -95,13 +96,34 @@ function toggleEraser(event) {
     target = event.currentTarget;
     if(!target.classList.contains("active")) {
         updatePaintButtons();
-        currentBrushColor = DEFAULT_CELL_COLOR;
+        currentBrushColor = `#${DEFAULT_CELL_COLOR}`;
         toggleButton(target);
     }
     else {
         toggleButton(target);
         toggleButton(brushButton);
-        currentBrushColor = DEFAULT_BRUSH_COLOR;
+        currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
+    }
+}
+
+function randomizeColor() {
+    const randomR = Math.floor(Math.random() * 256);
+    const randomG = Math.floor(Math.random() * 256);
+    const randomB = Math.floor(Math.random() * 256);
+    return `rgb(${randomR}, ${randomG}, ${randomB})`;
+}
+
+function toggleRainbow(event) {
+    target = event.currentTarget;
+    if(!target.classList.contains("active")) {
+        updatePaintButtons();
+        currentBrushColor = "random";
+        toggleButton(target);
+    }
+    else {
+        toggleButton(target);
+        toggleButton(brushButton);
+        currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
     }
 }
 
@@ -109,7 +131,7 @@ function toggleEraser(event) {
 resetButton.addEventListener("click", resetListener, false);
 // brushButton.addEventListener("click", toggleButton, false);
 eraserButton.addEventListener("click", toggleEraser, false);
-// rainbowButton.addEventListener("click", toggleButton, false);
+rainbowButton.addEventListener("click", toggleRainbow, false);
 trailButton.addEventListener("click", toggleBrushMode, false);
 clickButton.addEventListener("click", toggleBrushMode, false);
 
@@ -118,7 +140,7 @@ function makeGrid(size) {
         let cell = document.createElement("div");
         cell.classList.add("cell");
         cell.style.width = `${100/size}%`;
-        cell.style.backgroundColor = `${DEFAULT_CELL_COLOR}`;
+        cell.style.backgroundColor = `#${DEFAULT_CELL_COLOR}`;
         cell.addEventListener(currentBrushMode, colorListener, false);
         gridContainer.appendChild(cell);
     }
