@@ -110,17 +110,11 @@ function toggleBrushMode(event) {
             toggleButton(trackButton);
         }
     }
-    else if (target.classList.contains("click")){
+    else {
         if(!target.classList.contains("active")) {
             switchBrushEvents(DEFAULT_BRUSH_MODE, currentBrushMode);
             updatePaintButtons();
-            toggleButton(clickButton);
             toggleButton(target);
-        }
-        else {
-            switchBrushEvents("click", currentBrushMode);
-            toggleButton(target);
-            toggleButton(clickButton);
         }
     }
 }
