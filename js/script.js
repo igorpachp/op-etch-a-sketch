@@ -9,12 +9,14 @@ const sizeSlider = document.querySelector(".size-slider");
 const brushButton = document.querySelector(".brush");
 const eraserButton = document.querySelector(".eraser");
 const rainbowButton = document.querySelector(".rainbow");
+const resizeButton = document.querySelector(".resize");
 const trailButton = document.querySelector(".trail");
 const clickButton = document.querySelector(".click");
 
 // control variables
 let currentBrushMode = DEFAULT_BRUSH_MODE;
 let currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
+let currentSize = 16;
 
 // updates cell color
 const colorListener = function (event) {
@@ -24,9 +26,9 @@ const colorListener = function (event) {
 }
 
 // resets grid with new size
-const resetListener = function (event) {
+const resetListener = function () {
     gridContainer.innerHTML = "";
-    makeGrid(sizeSlider.value);
+    makeGrid(currentSize);
 }
 
 function updateTextOutput(val) {
@@ -141,6 +143,7 @@ resetButton.addEventListener("click", resetListener, false);
 brushButton.addEventListener("click", toggleBrush, false);
 eraserButton.addEventListener("click", toggleEraser, false);
 rainbowButton.addEventListener("click", toggleRainbow, false);
+resizeButton.addEventListener("click", resizeGrid, false);
 trailButton.addEventListener("click", toggleBrushMode, false);
 clickButton.addEventListener("click", toggleBrushMode, false);
 
@@ -153,6 +156,12 @@ function makeGrid(size) {
         cell.addEventListener(currentBrushMode, colorListener, false);
         gridContainer.appendChild(cell);
     }
+}
+
+function resizeGrid() {
+    gridContainer.innerHTML = "";
+    makeGrid(sizeSlider.value);
+    currentSize = sizeSlider.value;
 }
 
 makeGrid(sizeSlider.value);
