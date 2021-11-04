@@ -4,6 +4,7 @@ const DEFAULT_BRUSH_MODE = "mouseover";
 
 // page elements
 const gridContainer = document.querySelector(".grid-container");
+const colorPicker = document.getElementById("color-picker");
 const resetButton = document.querySelector(".clear");
 const sizeSlider = document.querySelector(".size-slider");
 const brushButton = document.querySelector(".brush");
@@ -17,6 +18,7 @@ const clickButton = document.querySelector(".click");
 let currentBrushMode = DEFAULT_BRUSH_MODE;
 let currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
 let currentSize = 16;
+colorPicker.value = currentBrushColor;
 
 // updates cell color
 const colorListener = function (event) {
@@ -98,7 +100,7 @@ function toggleBrush(event){
     target = event.currentTarget;
     if(!target.classList.contains("active")) {
         updatePaintButtons();
-        currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
+        currentBrushColor = colorPicker.value;
         toggleButton(target);
     }
 }
@@ -113,7 +115,7 @@ function toggleEraser(event) {
     else {
         toggleButton(target);
         toggleButton(brushButton);
-        currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
+        currentBrushColor = colorPicker.value;
     }
 }
 
@@ -134,8 +136,13 @@ function toggleRainbow(event) {
     else {
         toggleButton(target);
         toggleButton(brushButton);
-        currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
+        currentBrushColor = colorPicker.value;
     }
+}
+
+function setCurrentColor(newColor) {
+    if (brushButton.classList.contains("active"))
+        currentBrushColor = newColor;
 }
 
 // event listeners for each individual task
@@ -146,7 +153,7 @@ rainbowButton.addEventListener("click", toggleRainbow, false);
 resizeButton.addEventListener("click", resizeGrid, false);
 trailButton.addEventListener("click", toggleBrushMode, false);
 clickButton.addEventListener("click", toggleBrushMode, false);
-
+colorPicker.onchange = (e) => setCurrentColor(colorPicker.value);
 function makeGrid(size) {
     for(let i = 0; i < size*size; i++) {
         let cell = document.createElement("div");
