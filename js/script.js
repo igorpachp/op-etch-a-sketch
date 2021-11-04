@@ -13,18 +13,21 @@ const rainbowButton = document.querySelector(".rainbow");
 const resizeButton = document.querySelector(".resize");
 const trackButton = document.querySelector(".trail");
 const clickButton = document.querySelector(".click");
+const dragButton = document.querySelector(".drag");
 
 // control variables
 let currentBrushMode = DEFAULT_BRUSH_MODE;
 let currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
 let currentSize = 16;
-colorPicker.value = currentBrushColor;
 
 // updates cell color
 const colorListener = function (event) {
-    // if (brushButton.classList.contains("active") || eraserButton.classList.contains("active"))
-        // event.currentTarget.style.backgroundColor = currentBrushColor;
-    event.currentTarget.style.backgroundColor = currentBrushColor === "random" ? randomizeColor() : currentBrushColor;
+    if (currentBrushMode !== "drag")
+        event.currentTarget.style.backgroundColor = currentBrushColor === "random" ? randomizeColor() : currentBrushColor;
+    else {
+        if (event.buttons)
+            event.currentTarget.style.backgroundColor = currentBrushColor === "random" ? randomizeColor() : currentBrushColor;
+    }
 }
 
 // GRID FUNCTIONS ---------------------------------------
@@ -40,6 +43,7 @@ function makeGrid(size) {
         cell.classList.add("cell");
         cell.style.width = `${100/size}%`;
         cell.style.backgroundColor = `#${DEFAULT_CELL_COLOR}`;
+        cell.setAttribute('draggable', 'false');
         cell.addEventListener(currentBrushMode, colorListener, false);
         gridContainer.appendChild(cell);
     }
@@ -82,14 +86,26 @@ function updatePaintButtons() {
         toggleButton(clickButton);
     if (trackButton.classList.contains("active"))
         toggleButton(trackButton);
+    if (dragButton.classList.contains("active"))
+        toggleButton(dragButton);
 }
 
 // updates events for every cell in the grid
 function switchBrushEvents(newMode, oldMode) {
     cells = Array.from(gridContainer.childNodes);
     cells.forEach(cell => {
-        cell.removeEventListener(oldMode, colorListener, false);
-        cell.addEventListener(newMode, colorListener, false);
+        if (oldMode !== "drag")
+            cell.removeEventListener(oldMode, colorListener, false);
+        else {
+            cell.removeEventListener("mousedown", colorListener, false);
+            cell.removeEventListener("mouseover", colorListener, false);
+        }
+        if (newMode !== "drag")
+            cell.addEventListener(newMode, colorListener, false);
+        else {
+            cell.addEventListener("mousedown", colorListener, false);
+            cell.addEventListener("mouseover", colorListener, false);
+        }
     });
     currentBrushMode = newMode;
 }
@@ -101,6 +117,18 @@ function toggleBrushMode(event) {
     if(target.classList.contains("click")) {
         if(!target.classList.contains("active")) {
             switchBrushEvents("click", currentBrushMode);
+            updatePaintButtons();
+            toggleButton(target);
+        }
+        else {
+            switchBrushEvents(DEFAULT_BRUSH_MODE, currentBrushMode);
+            updatePaintButtons();
+            toggleButton(trackButton);
+        }
+    }
+    else if(target.classList.contains("drag")) {
+        if(!target.classList.contains("active")) {
+            switchBrushEvents("drag", currentBrushMode);
             updatePaintButtons();
             toggleButton(target);
         }
@@ -176,6 +204,9 @@ rainbowButton.addEventListener("click", toggleRainbow, false);
 resizeButton.addEventListener("click", resizeGrid, false);
 trackButton.addEventListener("click", toggleBrushMode, false);
 clickButton.addEventListener("click", toggleBrushMode, false);
+dragButton.addEventListener("click", toggleBrushMode, false);
 colorPicker.onchange = (e) => setCurrentColor(colorPicker.value);
 
+colorPicker.value = currentBrushColor;
+gridContainer.setAttribute('draggable', 'false');;
 makeGrid(sizeSlider.value);

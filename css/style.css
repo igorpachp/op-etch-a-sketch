@@ -21,6 +21,7 @@ main {
 .menu {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 16px;
     padding: 20px 32px;
 }
@@ -121,4 +122,8 @@ input[type=color]::-webkit-color-swatch-wrapper {
 .active {
     background-color: #454545;
     color: #e0e0e0;
+}
+
+.cell {
+    user-select: none;
 }
