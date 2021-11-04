@@ -7,9 +7,26 @@
     <link rel="stylesheet" href="css/style.css"/>
     <script src="js/script.js" defer></script>
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="grid-container">
-    </div>
+    <h1>Pixelpad</h1>
+    <main>
+        <div class="menu">
+            <button class="color-picker"></button>
+            <button class="brush">brush</button>
+            <button class="eraser">eraser</button>
+            <button class="rainbow">rainbow</button>
+            <button class="clear">clear</button>
+            <div>
+                <div class="slider-container"><input type="range" min="8" max="100" value="16" class="size-slider" onchange="updateTextInput(this.value);"/></div>
+                <div class="range-output">16 x 16</div>
+            </div>
+        </div>
+        <div class="grid-container">
+        </div>
+    </main>
 </body>
 </html>

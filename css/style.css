@@ -1,0 +1,106 @@
+body {
+    background-color: #e0e0e0;
+}
+
+h1 {
+    text-align: center;
+    color: #222222;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 64px;
+    text-transform: uppercase;
+    margin: 64px auto;
+}
+
+main {
+    display: flex;
+    gap: 32px;
+    width: fit-content;
+    margin: auto;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 32px;
+}
+
+button {
+    padding: 8px 16px;
+    border: solid 1px #222222;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+    color: #454545;
+    font-size: 16px;
+    text-transform: lowercase;
+    font-weight: bold;
+    transition: 0.25s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.menu > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slider-container {
+    width: 100%;
+}
+
+.size-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 12px;
+    background-color: transparent;
+    border: solid 1px #222222;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.size-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 20px;
+    background: #454545;
+    cursor: pointer;
+    border-radius: 8px;
+}
+  
+.slider::-moz-range-thumb {
+    width: 12px;
+    height: 48px;
+    background: #454545; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+
+.range-output {
+    padding: 4px;
+    /* width: 24px; */
+    text-align: center;
+    color: #454545;
+    font-weight: bold;
+}
+
+.grid-container {
+    box-shadow: 0 0 16px#aeaeae;
+    width: 560px;
+    height: 560px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.color-picker {
+    border-radius: 50%;
+    width: fit-content;
+    padding: 60px;
+    align-self: center;
+    background-color: #454545;
+    border: none;
+}

@@ -1,4 +1,5 @@
 const DEFAULT_CELL_COLOR = "#ffffff";
+const DEFAULT_BRUSH_COLOR = "#454545";
 
 const gridContainer = document.querySelector(".grid-container");
 const resetButton = document.querySelector(".clear");
@@ -7,7 +8,7 @@ const sizeSlider = document.querySelector(".size-slider");
 let brushMode = "mouseover";
 
 const colorListener = function (event) {
-    event.currentTarget.style.backgroundColor = "blue";
+    event.currentTarget.style.backgroundColor = `${DEFAULT_BRUSH_COLOR}`;
 }
 
 const resetListener = function (event) {
@@ -16,7 +17,7 @@ const resetListener = function (event) {
 }
 
 function updateTextInput(val) {
-    document.getElementById('textInput').value = val;
+    document.querySelector('.range-output').textContent = `${val} x ${val}`;
 }
 
 resetButton.addEventListener("click", resetListener, false);
@@ -26,6 +27,7 @@ function makeGrid(size) {
         let cell = document.createElement("div");
         cell.classList.add("cell");
         cell.style.width = `${100/size}%`;
+        cell.style.backgroundColor = `${DEFAULT_CELL_COLOR}`;
         cell.addEventListener(brushMode, colorListener, false);
         gridContainer.appendChild(cell);
     }
