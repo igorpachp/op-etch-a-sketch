@@ -21,7 +21,7 @@ main {
 .menu {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
     padding: 32px;
 }
 
@@ -81,8 +81,6 @@ button:hover {
 }
 
 .range-output {
-    padding: 4px;
-    /* width: 24px; */
     text-align: center;
     color: #454545;
     font-weight: bold;
@@ -103,4 +101,9 @@ button:hover {
     align-self: center;
     background-color: #454545;
     border: none;
+}
+
+.active {
+    background-color: #454545;
+    color: #e0e0e0;
 }
