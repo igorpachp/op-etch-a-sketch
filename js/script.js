@@ -92,6 +92,15 @@ function updatePaintButtons() {
         toggleButton(rainbowButton);
 }
 
+function toggleBrush(event){
+    target = event.currentTarget;
+    if(!target.classList.contains("active")) {
+        updatePaintButtons();
+        currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
+        toggleButton(target);
+    }
+}
+
 function toggleEraser(event) {
     target = event.currentTarget;
     if(!target.classList.contains("active")) {
@@ -129,7 +138,7 @@ function toggleRainbow(event) {
 
 // event listeners for each individual task
 resetButton.addEventListener("click", resetListener, false);
-// brushButton.addEventListener("click", toggleButton, false);
+brushButton.addEventListener("click", toggleBrush, false);
 eraserButton.addEventListener("click", toggleEraser, false);
 rainbowButton.addEventListener("click", toggleRainbow, false);
 trailButton.addEventListener("click", toggleBrushMode, false);
