@@ -76,8 +76,8 @@ button:hover {
 .slider::-moz-range-thumb {
     width: 12px;
     height: 48px;
-    background: #454545; /* Green background */
-    cursor: pointer; /* Cursor on hover */
+    background: #454545;
+    cursor: pointer;
 }
 
 .range-output {
