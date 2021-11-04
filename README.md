@@ -10,9 +10,9 @@ Another one of [The Odin Project](https://www.theodinproject.com/home) exercerci
 - Grid Size Selection
 - Paint on click only
 - Color Selection
+- Click and drag brush
 
 ## Tools to be implemented
 - Color Picker
 - "Bucket" tool
-- Click and drag brush
 - "Shading" brush
