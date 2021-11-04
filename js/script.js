@@ -82,8 +82,34 @@ function toggleBrushMode(event) {
     }
 }
 
+function updatePaintButtons() {
+    if (brushButton.classList.contains("active"))
+        toggleButton(brushButton);
+    if (eraserButton.classList.contains("active"))
+        toggleButton(eraserButton);
+    if (rainbowButton.classList.contains("active"))
+        toggleButton(rainbowButton);
+}
+
+function toggleEraser(event) {
+    target = event.currentTarget;
+    if(!target.classList.contains("active")) {
+        updatePaintButtons();
+        currentBrushColor = DEFAULT_CELL_COLOR;
+        toggleButton(target);
+    }
+    else {
+        toggleButton(target);
+        toggleButton(brushButton);
+        currentBrushColor = DEFAULT_BRUSH_COLOR;
+    }
+}
+
 // event listeners for each individual task
 resetButton.addEventListener("click", resetListener, false);
+// brushButton.addEventListener("click", toggleButton, false);
+eraserButton.addEventListener("click", toggleEraser, false);
+// rainbowButton.addEventListener("click", toggleButton, false);
 trailButton.addEventListener("click", toggleBrushMode, false);
 clickButton.addEventListener("click", toggleBrushMode, false);
 
