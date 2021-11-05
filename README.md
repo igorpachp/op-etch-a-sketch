@@ -11,8 +11,8 @@ Another one of [The Odin Project](https://www.theodinproject.com/home) exercerci
 - Paint on click only
 - Color Selection
 - Click and drag brush
+- Shading and lighting brush
 
 ## Tools to be implemented
 - Color Picker
 - "Bucket" tool
-- "Shading" brush
