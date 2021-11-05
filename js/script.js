@@ -187,6 +187,8 @@ function toggleEraser(event) {
     target = event.currentTarget;
     if(!target.classList.contains("active")) {
         updateBrushButtons();
+        updateShadeButtons();
+        shadeIncrement = 0;
         currentBrushColor = DEFAULT_CELL_COLOR;
         toggleButton(target);
     }
@@ -201,6 +203,8 @@ function toggleRainbow(event) {
     target = event.currentTarget;
     if(!target.classList.contains("active")) {
         updateBrushButtons();
+        updateShadeButtons();
+        shadeIncrement = 0;
         currentBrushColor = "random";
         toggleButton(target);
     }
@@ -214,6 +218,12 @@ function toggleRainbow(event) {
 // controls the shade mode
 function toggleShade(event) {
     target = event.currentTarget;
+
+    if(!brushButton.classList.contains("active")) {
+        updateBrushButtons();
+        currentBrushColor = colorPicker.value;
+        toggleButton(brushButton);
+    }
 
     if(!target.classList.contains("active")) {
         updateShadeButtons();
