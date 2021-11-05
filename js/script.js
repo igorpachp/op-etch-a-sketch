@@ -1,4 +1,4 @@
-const DEFAULT_CELL_COLOR = "ffffff";
+const DEFAULT_CELL_COLOR = "transparent";
 const DEFAULT_BRUSH_COLOR = "454545";
 const DEFAULT_BRUSH_MODE = "mouseover";
 
@@ -14,19 +14,42 @@ const resizeButton = document.querySelector(".resize");
 const trackButton = document.querySelector(".trail");
 const clickButton = document.querySelector(".click");
 const dragButton = document.querySelector(".drag");
+const shadeButton = document.querySelector(".shade");
+const lightButton = document.querySelector(".light");
 
 // control variables
 let currentBrushMode = DEFAULT_BRUSH_MODE;
 let currentBrushColor = `#${DEFAULT_BRUSH_COLOR}`;
 let currentSize = 16;
+let shadeIncrement = 0;
 
 // updates cell color
+function paintCell(cell, color) {
+    let finalColor = DEFAULT_BRUSH_COLOR;
+    switch (color) {
+        case "random":
+            finalColor = randomizeColor();
+            break;
+        case "shade":
+            let cellColor = cell.style.backgroundColor;
+            if (cellColor !== "transparent") {
+                cellColor = cellColor.slice(3).slice(1, cellColor.length-1).split(",");
+                finalColor = shadeCell(cellColor, shadeIncrement);
+            }
+            break;
+        default:
+            finalColor = color;
+    }
+    cell.style.backgroundColor = finalColor;
+}
+
+// handles cell event
 const colorListener = function (event) {
     if (currentBrushMode !== "drag")
-        event.currentTarget.style.backgroundColor = currentBrushColor === "random" ? randomizeColor() : currentBrushColor;
+        paintCell(event.currentTarget, currentBrushColor);
     else {
         if (event.buttons)
-            event.currentTarget.style.backgroundColor = currentBrushColor === "random" ? randomizeColor() : currentBrushColor;
+        paintCell(event.currentTarget, currentBrushColor);
     }
 }
 
@@ -42,7 +65,7 @@ function makeGrid(size) {
         let cell = document.createElement("div");
         cell.classList.add("cell");
         cell.style.width = `${100/size}%`;
-        cell.style.backgroundColor = `#${DEFAULT_CELL_COLOR}`;
+        cell.style.backgroundColor = DEFAULT_CELL_COLOR;
         cell.setAttribute('draggable', 'false');
         cell.addEventListener(currentBrushMode, colorListener, false);
         gridContainer.appendChild(cell);
@@ -90,6 +113,14 @@ function updatePaintButtons() {
         toggleButton(dragButton);
 }
 
+// deactivate shade and light mode buttons
+function updateShadeButtons() {
+    if (shadeButton.classList.contains("active"))
+        toggleButton(shadeButton);
+    if (lightButton.classList.contains("active"))
+        toggleButton(lightButton);
+}
+
 // updates events for every cell in the grid
 function switchBrushEvents(newMode, oldMode) {
     cells = Array.from(gridContainer.childNodes);
@@ -114,36 +145,20 @@ function switchBrushEvents(newMode, oldMode) {
 function toggleBrushMode(event) {
     target = event.currentTarget;
 
-    if(target.classList.contains("click")) {
-        if(!target.classList.contains("active")) {
+    if(!target.classList.contains("active")) {
+        updatePaintButtons();
+        toggleButton(target);
+        if(target.classList.contains("click"))
             switchBrushEvents("click", currentBrushMode);
-            updatePaintButtons();
-            toggleButton(target);
-        }
-        else {
-            switchBrushEvents(DEFAULT_BRUSH_MODE, currentBrushMode);
-            updatePaintButtons();
-            toggleButton(trackButton);
-        }
-    }
-    else if(target.classList.contains("drag")) {
-        if(!target.classList.contains("active")) {
+        else if(target.classList.contains("drag"))
             switchBrushEvents("drag", currentBrushMode);
-            updatePaintButtons();
-            toggleButton(target);
-        }
-        else {
+        else
             switchBrushEvents(DEFAULT_BRUSH_MODE, currentBrushMode);
-            updatePaintButtons();
-            toggleButton(trackButton);
-        }
     }
     else {
-        if(!target.classList.contains("active")) {
-            switchBrushEvents(DEFAULT_BRUSH_MODE, currentBrushMode);
-            updatePaintButtons();
-            toggleButton(target);
-        }
+        updatePaintButtons();
+        toggleButton(trackButton);
+        switchBrushEvents(DEFAULT_BRUSH_MODE, currentBrushMode);
     }
 }
 
@@ -172,7 +187,7 @@ function toggleEraser(event) {
     target = event.currentTarget;
     if(!target.classList.contains("active")) {
         updateBrushButtons();
-        currentBrushColor = `#${DEFAULT_CELL_COLOR}`;
+        currentBrushColor = DEFAULT_CELL_COLOR;
         toggleButton(target);
     }
     else {
@@ -196,6 +211,38 @@ function toggleRainbow(event) {
     }
 }
 
+// controls the shade mode
+function toggleShade(event) {
+    target = event.currentTarget;
+
+    if(!target.classList.contains("active")) {
+        updateShadeButtons();
+        currentBrushColor = "shade";
+        shadeIncrement = target.classList.contains("shade") ? -10 : 10;
+    }
+    else {
+        shadeIncrement = 0;
+        currentBrushColor = colorPicker.value;
+    }
+    toggleButton(target);
+}
+
+function calculateColor(color, value) {
+    color = color + value;
+    color = (color > 0xFF) ? "FF" : (color < 0x00) ? "00" : (color < 0x10) ? `0${color.toString(16)}` : color.toString(16);
+    return color;
+}
+
+function shadeCell(color, value) {
+    for (let i = 0; i < color.length; i++)
+        color[i] = parseInt(color[i]);
+    let red = calculateColor(color[0], value);
+    let green = calculateColor(color[1], value);
+    let blue = calculateColor(color[2], value);
+    console.log([red,green,blue]);
+    return `#${red}${green}${blue}`;
+}
+
 // event listeners for each individual task
 resetButton.addEventListener("click", resetListener, false);
 brushButton.addEventListener("click", toggleBrush, false);
@@ -205,8 +252,11 @@ resizeButton.addEventListener("click", resizeGrid, false);
 trackButton.addEventListener("click", toggleBrushMode, false);
 clickButton.addEventListener("click", toggleBrushMode, false);
 dragButton.addEventListener("click", toggleBrushMode, false);
+shadeButton.addEventListener("click", toggleShade, false);
+lightButton.addEventListener("click", toggleShade, false);
 colorPicker.onchange = (e) => setCurrentColor(colorPicker.value);
 
 colorPicker.value = currentBrushColor;
-gridContainer.setAttribute('draggable', 'false');;
+gridContainer.setAttribute('draggable', 'false');
+gridContainer.style.backgroundColor = "#ffffff";
 makeGrid(sizeSlider.value);
