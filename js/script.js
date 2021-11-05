@@ -163,7 +163,7 @@ function toggleBrushMode(event) {
 }
 
 function setCurrentColor(newColor) {
-    if (brushButton.classList.contains("active"))
+    if (brushButton.classList.contains("active") && currentBrushColor !== "shade")
         currentBrushColor = newColor;
 }
 
