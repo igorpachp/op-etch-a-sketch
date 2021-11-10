@@ -67,7 +67,12 @@ function makeGrid(size) {
         cell.style.width = `${100/size}%`;
         cell.style.backgroundColor = DEFAULT_CELL_COLOR;
         cell.setAttribute('draggable', 'false');
-        cell.addEventListener(currentBrushMode, colorListener, false);
+        if (currentBrushMode !== "drag")
+            cell.addEventListener(currentBrushMode, colorListener, false);
+        else {
+            cell.addEventListener("mousedown", colorListener, false);
+            cell.addEventListener("mouseover", colorListener, false);
+        }
         gridContainer.appendChild(cell);
     }
 }
